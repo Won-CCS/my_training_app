@@ -1,72 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:table_calendar/table_calendar.dart';
+import 'calendar_widget.dart';
+
 
 void main() {
-  // 最初に表示するWidget
-  runApp(MyTodoApp());
+  runApp(const MyApp());
 }
 
-class MyTodoApp extends StatelessWidget {
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // アプリ名
-      title: 'My Todo App',
+      title: 'Calendar Sample',
       theme: ThemeData(
-        // テーマカラー
         primarySwatch: Colors.blue,
       ),
-      // リスト一覧画面を表示
-      home: Calendar(),
+      home: const _CalendarSample(),
     );
   }
 }
 
-class Calender extends StatefulWidget {
-  const Calender({super.key});
-
-  @override
-  State<Calender> createState() => _CalenderState();
-}
-
-class _CalenderState extends State<Calender> {
-  final DateTime _focusedDay = DateTime.now();
-  CalendarFormat _calendarFormat = CalendarFormat.month;
+class _CalendarSample extends StatelessWidget {
+  const _CalendarSample({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("カレンダー")),
-      body: TableCalendar(
-        firstDay: DateTime.utc(2020, 1, 1),
-        lastDay: DateTime.utc(2030, 12, 31),
-        focusedDay: _focusedDay,
-        calendarFormat: _calendarFormat,
-        onFormatChanged: (format) {
-          if (_calendarFormat != format) {
-            setState(() {
-              _calendarFormat = format;
-            });
-          }
-        },
-      ),
-    );
-  }
-}
-
-// リスト追加画面用Widget
-class TodoAddPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: TextButton(
-          // ボタンをクリックした時の処理
-          onPressed: () {
-            // "pop"で前の画面に戻る
-            Navigator.of(context).pop();
-          },
-          child: Text('リスト追加画面（クリックで戻る）'),
+      appBar: AppBar(title: const Text('CalendarSample')),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            Calendar(date: DateTime.now()),
+            TextButton(onPressed: () { /* ボタンがタップされた時の処理 */ },
+                      child: Text('トレーニング開始'),
+            )
+          ],
         ),
       ),
     );

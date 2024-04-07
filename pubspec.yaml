@@ -30,7 +30,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  table_calendar: ^3.1.0
+  sqflite: ^2.0.0 # SQLite database
+  flutter_datetime_picker_plus: ^2.1.0 # Date and time picker
 
 
   # The following adds the Cupertino Icons font to your application.
