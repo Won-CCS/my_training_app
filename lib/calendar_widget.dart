@@ -44,7 +44,7 @@ class _SwipeWidgetState extends State<Calendar> {
 
             final newX = details.localPosition.dx;
 
-            if (newX - dragStartX > width / 3 && !_dragged) {
+            if (newX - dragStartX > 2 && !_dragged) {
               // 右にスワイプされた場合
               setState(() {
                 _dragged = true;
@@ -54,7 +54,7 @@ class _SwipeWidgetState extends State<Calendar> {
                   widget.date = widget.date.copyWith(month: widget.date.month - 1);
                 }
               });
-            } else if (newX - dragStartX < -width / 3 && !_dragged){
+            } else if (newX - dragStartX < -1 && !_dragged){
               // 左にスワイプされた場合
               setState(() {
                 _dragged = true;
