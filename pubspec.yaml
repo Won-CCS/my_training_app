@@ -33,6 +33,7 @@ dependencies:
   sqflite: ^2.0.0 # SQLite database
   flutter_datetime_picker_plus: ^2.1.0 # Date and time picker
   flutter_speed_dial: ^3.0.5 # Floating action button
+  image_picker: ^1.0.7
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'calendar_widget.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'training_button.dart';
 
 
 void main() {
@@ -100,9 +101,24 @@ class SettingPage extends StatelessWidget {
                     builder: (BuildContext context) {
                       return Container(
                         height: 500,
-                        child: Center(
-                          child: Text('ここにメニュー項目が入ります'),
-                        ),
+                        margin: EdgeInsets.all(20),
+                        child: ListView.builder(
+                          itemCount: 4, // リストアイテムの数
+                          itemBuilder: (BuildContext context, int index) {
+                            // 各リストアイテムのビルド
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 8.0), // 垂直方向の余白を指定
+                              child: Column( 
+                                children: [
+                                TrainingButton(name: "スクワット"),
+                                TrainingButton(name: "背筋"),
+                                TrainingButton(name: "腕立て"),
+                                TrainingButton(name: "腹筋")
+                                ],
+                              ),
+                            );
+                          },
+                        )
                       );
                     }
                   );
@@ -134,33 +150,7 @@ class TrainingListPage extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            TextButton(
-              onPressed: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => TrainingDetailPage()),
-                // );
-              },
-              child: const Text('腹筋'),
-            ),
-            TextButton(
-              onPressed: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => TrainingDetailPage()),
-                // );
-              },
-              child: const Text('背筋'),
-            ),
-            TextButton(
-              onPressed: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => TrainingDetailPage()),
-                // );
-              },
-              child: const Text('腕立て'),
-            ),
+
           ],
         ),
       ),
