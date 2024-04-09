@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'training_data.dart';
+import 'utility.dart';
 
 class TrainingButton extends StatelessWidget {
   const TrainingButton({Key? key, required this.name}) : super(key: key);
@@ -17,6 +19,12 @@ class TrainingButton extends StatelessWidget {
       child: Row(
         children: [
           SizedBox(width: 70,),
+          GestureDetector(
+            onTap: (){
+            //ここに画面遷移などのイベントを書く。
+            },
+            child: Utility.imageFromBase64String('thumbnailName'),
+          ),
           Text(
             name,
             style: TextStyle(
