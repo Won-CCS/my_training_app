@@ -51,8 +51,15 @@ class EntryPage extends StatelessWidget {
   }
 }
 
-class SettingPage extends StatelessWidget {
+class SettingPage extends StatefulWidget {
   const SettingPage({Key? key}) : super(key: key);
+
+  @override
+  _SettingPageState createState() => _SettingPageState();  
+}
+
+class _SettingPageState extends State<SettingPage> {
+  List<String> trainingMenuNames = [];
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +67,7 @@ class SettingPage extends StatelessWidget {
       builder: (BuildContext context, BoxConstraints constraints) {
         return Scaffold(
           appBar: AppBar(title: const Text('トレーニング設定')),
+          //右下のボタン
           floatingActionButton: SpeedDial(
             animatedIcon: AnimatedIcons.add_event,
             backgroundColor: Colors.blue,
@@ -70,10 +78,7 @@ class SettingPage extends StatelessWidget {
                 label: 'ルーティーン一覧から追加',
                 backgroundColor: Colors.blue,
                 onTap: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => RoutineListPage()),
-                  // );
+                  // ボトムシートを表示
                   showModalBottomSheet(
                     context: context,
                     builder: (BuildContext context) {
@@ -92,33 +97,12 @@ class SettingPage extends StatelessWidget {
                 label: 'トレーニング一覧から追加',
                 backgroundColor: Colors.blue,
                 onTap: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => TrainingListPage()),
-                  // );
+                  // ボトムシートを表示
                   showModalBottomSheet(
                     context: context,
                     builder: (BuildContext context) {
-                      return Container(
-                        height: 500,
-                        margin: EdgeInsets.all(20),
-                        child: ListView.builder(
-                          itemCount: 4, // リストアイテムの数
-                          itemBuilder: (BuildContext context, int index) {
-                            // 各リストアイテムのビルド
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8.0), // 垂直方向の余白を指定
-                              child: Column( 
-                                children: [
-                                TrainingButton(name: "スクワット"),
-                                TrainingButton(name: "背筋"),
-                                TrainingButton(name: "腕立て"),
-                                TrainingButton(name: "腹筋")
-                                ],
-                              ),
-                            );
-                          },
-                        )
+                      return MyBottomSheetContent(
+                        trainingMenuNames: trainingMenuNames,
                       );
                     }
                   );
@@ -126,12 +110,12 @@ class SettingPage extends StatelessWidget {
               ),
             ],
           ),
-          body: Center(
-            child: Column(
-              children: [
-                
-              ],
-            ),
+          //トレーニングリストを表示
+          body: ListView.builder(
+            itemCount: trainingMenuNames.length,
+            itemBuilder: (context, index) {
+              return TrainingRecordWidget(name: trainingMenuNames[index]);
+            },
           ),
         );
       },
@@ -139,56 +123,28 @@ class SettingPage extends StatelessWidget {
   }
 }
 
-class TrainingListPage extends StatelessWidget {
-  const TrainingListPage({Key? key}) : super(key: key);
+
+class MyBottomSheetContent extends StatefulWidget {
+  const MyBottomSheetContent({Key? key, required this.trainingMenuNames}) : super(key: key);
+  final List<String> trainingMenuNames;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('トレーニング一覧')),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-
-          ],
-        ),
-      ),
-    );
-  }
+  _MyBottomSheetContentState createState() => _MyBottomSheetContentState();
 }
 
-class RoutineListPage extends StatelessWidget {
-  const RoutineListPage({Key? key}) : super(key: key);
+class _MyBottomSheetContentState extends State<MyBottomSheetContent> {
+  // ここに状態を保持する変数やメソッドを追加
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('ルーティーン一覧')),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            TextButton(
-              onPressed: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => RoutineDetailPage()),
-                // );
-              },
-              child: const Text('朝のルーティーン'),
-            ),
-            TextButton(
-              onPressed: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => RoutineDetailPage()),
-                // );
-              },
-              child: const Text('夜のルーティーン'),
-            ),
-          ],
-        ),
+    return Container(
+      height: 500,
+      margin: EdgeInsets.all(20),
+      child: ListView.builder(
+        itemCount: widget.trainingMenuNames.length,
+        itemBuilder: (context, index) {
+          return TrainingButton(imageName: widget.trainingMenuNames[index]);
+        },
       ),
     );
   }

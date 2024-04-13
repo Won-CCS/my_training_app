@@ -2,48 +2,54 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 class DatabaseHelper {
-  static final DatabaseHelper _instance = DatabaseHelper.internal();
+  static final _databaseName = "my_database.db";
+  static final _databaseVersion = 1;
 
-  factory DatabaseHelper() => _instance;
+  static final table = 'images';
 
-  static Database? _db;
+  static final columnId = '_id';
+  static final columnName = 'name';
+  static final columnImage = 'image';
 
-  Future<Database> get db async {
-    if (_db != null) {
-      return _db!;
-    }
-    _db = await initDatabase();
-    return _db!;
+  DatabaseHelper._privateConstructor();
+  static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
+
+  static Database? _database;
+  Future<Database> get database async {
+    if (_database != null) return _database!;
+    _database = await _initDatabase();
+    return _database!;
   }
 
-  DatabaseHelper.internal();
-
-  Future<Database> initDatabase() async {
-    String path = join(await getDatabasesPath(), 'my_training.db');
-    return await openDatabase(path, version: 1, onCreate: _onCreate);
+  _initDatabase() async {
+    String path = join(await getDatabasesPath(), _databaseName);
+    return await openDatabase(path,
+        version: _databaseVersion, onCreate: _onCreate);
   }
 
-  void _onCreate(Database db, int version) async {
+  Future<void> _onCreate(Database db, int version) async {
     await db.execute('''
-      CREATE TABLE data_table (
-        id INTEGER PRIMARY KEY,
-        imagePath TEXT,
-        textContent TEXT
+      CREATE TABLE $table (
+        $columnId INTEGER PRIMARY KEY,
+        $columnName TEXT NOT NULL,
+        $columnImage BLOB
       )
     ''');
   }
 
-  Future<int> insertData(String imagePath, String textContent) async {
-    Database database = await db;
-    Map<String, dynamic> row = {
-      'imagePath': imagePath,
-      'textContent': textContent,
-    };
-    return await database.insert('data_table', row);
+  Future<int> insertImage(Map<String, dynamic> row) async {
+    Database db = await instance.database;
+    return await db.insert(table, row);
   }
 
-  Future<List<Map<String, dynamic>>> getAllData() async {
-    Database database = await db;
-    return await database.query('data_table');
+  Future<List<Map<String, dynamic>>> queryAllImages() async {
+    Database db = await instance.database;
+    return await db.query(table);
+  }
+
+  // 指定された名前で画像を検索する関数
+  Future<List<Map<String, dynamic>>> queryImageByName(String name) async {
+    Database db = await instance.database;
+    return await db.query(table, where: '$columnName = ?', whereArgs: [name]);
   }
 }
